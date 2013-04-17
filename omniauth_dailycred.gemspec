@@ -9,6 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Hank Stoever"]
   spec.email         = ["hstove@gmail.com"]
   spec.description   = %q{Omniauth adapter for dailycred.com OAuth authentication.}
+  spec.summary       = "Use if you only want to communicate with Dailycred through omniauth."
   spec.homepage      = "https://www.dailycred.com"
   spec.license       = "MIT"
   spec.add_dependency("omniauth")

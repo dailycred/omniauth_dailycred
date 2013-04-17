@@ -1,29 +1,47 @@
-# OmniauthDailycred
+# Omniauth_Dailycred
 
-TODO: Write a gem description
+This gem is intended for users who solely want to interact with [dailycred](https://www.dailycred.com) through omniauth. If you are looking into a more comprehensive authentication solution with dailycred, you should see our [rails engine](https://github.com/dailycred/dailycred).
 
-## Installation
+##Installation
 
-Add this line to your application's Gemfile:
+In your gemfile
 
-    gem 'omniauth_dailycred'
+~~~
+gem 'omniauth_dailycred'
+~~~
 
-And then execute:
+Then simply run `bundle`.
 
-    $ bundle
+##Usage
 
-Or install it yourself as:
+Create an initializer at `config/initializers/omniauth.rb` with the following:
 
-    $ gem install omniauth_dailycred
+~~~
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :dailycred, ENV['DAILYCRED_CLIENT_ID'], ENV['DAILYCRED_SECRET']
+end
+~~~
 
-## Usage
+Then simply send your users to `auth/dailycred` and they will be forwarded through the OAuth flow. The following parameters can be passed along to dailycred:
 
-TODO: Write usage instructions here
+1. action
+1. identity_provider
+1. referrer
+1. access_token
 
-## Contributing
+If you run into an SSL Error, it's because omniauth can't find your ssl certicate. Try modifying `config/initializers/omniauth.rb` to look like the following:
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+~~~
+opts = {:client_options => {:ssl => {}}}
+
+if File.exists?('/etc/ssl/certs')
+  opts[:client_options][:ssl][:ca_path] = '/etc/ssl/certs'
+end
+if File.exists?('/opt/local/share/curl/curl-ca-bundle.crt')
+  opts[:client_options][:ssl][:ca_file] = '/opt/local/share/curl/curl-ca-bundle.crt'
+end
+
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :dailycred, ENV['DAILYCRED_CLIENT_ID'], ENV['DAILYCRED_SECRET'], opts
+end
+~~~

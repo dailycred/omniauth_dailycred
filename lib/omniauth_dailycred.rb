@@ -1,6 +1,3 @@
-require "omniauth_dailycred/version"
+Dir[File.expand_path('../omniauth_dailycred/*', __FILE__)].each { |f| require f }
 require "omniauth/strategies/dailycred"
 
-module OmniauthDailycred
-  # Your code goes here...
-end
